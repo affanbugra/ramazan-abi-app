@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572993686473",
+    "project_id": "ramazan-abi-001",
+    "storage_bucket": "ramazan-abi-001.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572993686473:android:abd876427c42d5881bf618",
+        "android_client_info": {
+          "package_name": "com.affanbugra.ramazanabi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_DRah9e3nMKL-kssXUZtEhaqviksDkdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

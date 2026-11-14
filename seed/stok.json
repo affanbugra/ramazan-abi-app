@@ -1,0 +1,26 @@
+{
+  "_aciklama": "Stok takibi için BAŞLANGIÇ malzeme listesi. Menüden çıkarılmış tahmini bir listedir; 'max' (çubuğun dolu hali) ve 'threshold' (bu değere eşit veya altına inince kırmızı + Alınacaklar listesi) değerleri TAHMİNİDİR, Ramazan abi uygulamadan düzenleyecek. quantity başlangıçta 0'dır. 'step' kaydırma çubuğunun adım büyüklüğüdür. Seed scripti bu listeyi yalnızca stockItems koleksiyonu BOŞSA yazmalıdır.",
+  "items": [
+    { "id": "ekmek", "name": "Ekmek", "unit": "adet", "max": 60, "threshold": 15, "step": 1, "order": 1 },
+    { "id": "tost-ekmegi", "name": "Tost ekmeği", "unit": "paket", "max": 20, "threshold": 5, "step": 1, "order": 2 },
+    { "id": "lavas", "name": "Lavaş", "unit": "adet", "max": 80, "threshold": 20, "step": 1, "order": 3 },
+    { "id": "kasar", "name": "Kaşar", "unit": "kg", "max": 10, "threshold": 2, "step": 0.5, "order": 4 },
+    { "id": "sucuk", "name": "Sucuk", "unit": "kg", "max": 8, "threshold": 2, "step": 0.5, "order": 5 },
+    { "id": "yumurta", "name": "Yumurta", "unit": "adet", "max": 180, "threshold": 30, "step": 6, "order": 6 },
+    { "id": "tavuk", "name": "Tavuk", "unit": "kg", "max": 15, "threshold": 3, "step": 0.5, "order": 7 },
+    { "id": "nugget", "name": "Nugget", "unit": "paket", "max": 10, "threshold": 2, "step": 1, "order": 8 },
+    { "id": "tantuni-eti", "name": "Tantuni eti", "unit": "kg", "max": 8, "threshold": 2, "step": 0.5, "order": 9 },
+    { "id": "kavurma", "name": "Kavurma", "unit": "kg", "max": 5, "threshold": 1, "step": 0.5, "order": 10 },
+    { "id": "kofte", "name": "Köfte", "unit": "adet", "max": 100, "threshold": 20, "step": 5, "order": 11 },
+    { "id": "adana-kiyma", "name": "Adana kıyma", "unit": "kg", "max": 8, "threshold": 2, "step": 0.5, "order": 12 },
+    { "id": "ton-baligi", "name": "Ton balığı", "unit": "kutu", "max": 24, "threshold": 6, "step": 1, "order": 13 },
+    { "id": "cig-kofte", "name": "Çiğ köfte", "unit": "kg", "max": 5, "threshold": 1, "step": 0.5, "order": 14 },
+    { "id": "patates", "name": "Patates (dondurulmuş)", "unit": "kg", "max": 20, "threshold": 5, "step": 1, "order": 15 },
+    { "id": "pizza", "name": "Pizza", "unit": "adet", "max": 20, "threshold": 4, "step": 1, "order": 16 },
+    { "id": "domates", "name": "Domates", "unit": "kg", "max": 10, "threshold": 2, "step": 0.5, "order": 17 },
+    { "id": "biber", "name": "Biber", "unit": "kg", "max": 5, "threshold": 1, "step": 0.5, "order": 18 },
+    { "id": "sogan", "name": "Soğan", "unit": "kg", "max": 5, "threshold": 1, "step": 0.5, "order": 19 },
+    { "id": "tereyagi", "name": "Tereyağı", "unit": "paket", "max": 6, "threshold": 2, "step": 1, "order": 20 },
+    { "id": "sivi-yag", "name": "Sıvı yağ", "unit": "litre", "max": 10, "threshold": 2, "step": 1, "order": 21 }
+  ]
+}

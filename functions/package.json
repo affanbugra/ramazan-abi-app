@@ -1,0 +1,28 @@
+{
+  "name": "ramazan-abi-functions",
+  "private": true,
+  "main": "lib/src/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "make-admin": "npm run build && node lib/scripts/make-admin.js",
+    "seed": "npm run build && node lib/scripts/seed.js",
+    "reset-data": "npm run build && node lib/scripts/reset-data.js",
+    "test:rules": "npm run build && firebase emulators:exec --only firestore,storage --project demo-ramazan-abi \"node --test lib/test/rules.test.js\"",
+    "test:functions": "npm run build && firebase emulators:exec --only auth,firestore,functions,storage --project demo-ramazan-abi \"node --test --test-concurrency=1 lib/test/invites.test.js lib/test/orders.test.js lib/test/stats.test.js\""
+  },
+  "dependencies": {
+    "expo-server-sdk": "^7.2.0",
+    "firebase-admin": "^14.5.0",
+    "firebase-functions": "^7.4.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@types/node": "^22.20.5",
+    "firebase": "^13.0.0",
+    "typescript": "~6.0.3"
+  }
+}

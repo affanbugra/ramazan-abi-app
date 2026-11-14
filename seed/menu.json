@@ -1,0 +1,110 @@
+{
+  "_aciklama": "Kantin menüsünün başlangıç verisi. Kaynak: docs/referans/menu-panosu.png. Fiyatlar TL, tam sayı. Her ürünün en az 1 çeşidi (variant) vardır; tek çeşitli ürünlerde çeşit adı 'Standart' olur ve arayüzde gösterilmez. imageUrl alanları boştur, fotoğrafları Ramazan abi uygulamadan yükler. Seed scripti bu dosyayı id'lere göre idempotent yazmalıdır (tekrar çalıştırınca kopya oluşturmaz, var olan fotoğraf URL'lerini ve 'available' durumlarını EZMEZ).",
+  "categories": [
+    { "id": "tavalar", "name": "Tavalar", "order": 1, "placeholderIcon": "CookingPot" },
+    { "id": "tostlar", "name": "Tostlar", "order": 2, "placeholderIcon": "Bread" },
+    { "id": "ekmek-arasi", "name": "Ekmek arası", "order": 3, "placeholderIcon": "Hamburger" },
+    { "id": "durumler", "name": "Dürümler", "order": 4, "placeholderIcon": "ForkKnife" },
+    { "id": "diger", "name": "Diğer", "order": 5, "placeholderIcon": "BowlFood" }
+  ],
+  "products": [
+    { "id": "menemen", "categoryId": "tavalar", "name": "Menemen", "order": 1, "variants": [
+      { "id": "sade", "name": "Sade", "price": 95 },
+      { "id": "kasarli", "name": "Kaşarlı", "price": 115 },
+      { "id": "sucuklu", "name": "Sucuklu", "price": 115 },
+      { "id": "karisik", "name": "Karışık", "price": 130 }
+    ]},
+    { "id": "yumurta", "categoryId": "tavalar", "name": "Yumurta", "order": 2, "variants": [
+      { "id": "sade", "name": "Sade", "price": 60 },
+      { "id": "kasarli", "name": "Kaşarlı", "price": 75 },
+      { "id": "sucuklu", "name": "Sucuklu", "price": 75 },
+      { "id": "karisik", "name": "Karışık", "price": 90 }
+    ]},
+    { "id": "sebzeli-yumurta", "categoryId": "tavalar", "name": "Sebzeli yumurta", "order": 3, "variants": [
+      { "id": "sade", "name": "Sade", "price": 75 },
+      { "id": "kasarli", "name": "Kaşarlı", "price": 90 },
+      { "id": "sucuklu", "name": "Sucuklu", "price": 90 },
+      { "id": "karisik", "name": "Karışık", "price": 100 }
+    ]},
+    { "id": "kavurmali-yumurta", "categoryId": "tavalar", "name": "Kavurmalı yumurta", "order": 4, "variants": [
+      { "id": "standart", "name": "Standart", "price": 160 }
+    ]},
+
+    { "id": "tost", "categoryId": "tostlar", "name": "Tost", "order": 1, "variants": [
+      { "id": "sucuklu", "name": "Sucuklu", "price": 70 },
+      { "id": "kasarli", "name": "Kaşarlı", "price": 75 },
+      { "id": "karisik", "name": "Karışık", "price": 85 },
+      { "id": "cift-kasarli", "name": "Çift kaşarlı", "price": 100 }
+    ]},
+    { "id": "sebzeli-tost", "categoryId": "tostlar", "name": "Sebzeli tost", "order": 2, "variants": [
+      { "id": "kasarli", "name": "Kaşarlı", "price": 80 },
+      { "id": "sucuklu", "name": "Sucuklu", "price": 80 },
+      { "id": "karisik", "name": "Karışık", "price": 95 }
+    ]},
+    { "id": "yumurtali-tost", "categoryId": "tostlar", "name": "Yumurtalı tost", "order": 3, "variants": [
+      { "id": "kasarli", "name": "Kaşarlı", "price": 80 },
+      { "id": "sucuklu", "name": "Sucuklu", "price": 80 },
+      { "id": "karisik", "name": "Karışık", "price": 95 }
+    ]},
+    { "id": "kavurmali-tost", "categoryId": "tostlar", "name": "Kavurmalı tost", "order": 4, "variants": [
+      { "id": "sade", "name": "Sade", "price": 135 },
+      { "id": "kasarli", "name": "Kaşarlı", "price": 160 }
+    ]},
+
+    { "id": "ekmek-arasi-tavuk", "categoryId": "ekmek-arasi", "name": "Ekmek arası tavuk", "order": 1, "variants": [
+      { "id": "standart", "name": "Standart", "price": 90 }
+    ]},
+    { "id": "ekmek-arasi-nugget", "categoryId": "ekmek-arasi", "name": "Ekmek arası nugget", "order": 2, "variants": [
+      { "id": "standart", "name": "Standart", "price": 90 }
+    ]},
+    { "id": "ekmek-arasi-tantuni", "categoryId": "ekmek-arasi", "name": "Ekmek arası tantuni", "order": 3, "variants": [
+      { "id": "standart", "name": "Standart", "price": 90 }
+    ]},
+    { "id": "sucuk-ekmek", "categoryId": "ekmek-arasi", "name": "Sucuk ekmek", "order": 4, "variants": [
+      { "id": "standart", "name": "Standart", "price": 90 }
+    ]},
+    { "id": "ekmek-arasi-ton-baligi", "categoryId": "ekmek-arasi", "name": "Ekmek arası ton balığı", "order": 5, "variants": [
+      { "id": "standart", "name": "Standart", "price": 100 }
+    ]},
+    { "id": "patsolu-ekmek-arasi", "categoryId": "ekmek-arasi", "name": "Patsolu ekmek arası", "order": 6, "variants": [
+      { "id": "tavuk", "name": "Tavuk", "price": 115 },
+      { "id": "nugget", "name": "Nugget", "price": 115 },
+      { "id": "sucuk", "name": "Sucuk", "price": 115 }
+    ]},
+    { "id": "kofte-ekmek", "categoryId": "ekmek-arasi", "name": "Köfte ekmek", "order": 7, "variants": [
+      { "id": "standart", "name": "Standart", "price": 160 }
+    ]},
+
+    { "id": "adana-durum", "categoryId": "durumler", "name": "Adana dürüm", "order": 1, "variants": [
+      { "id": "standart", "name": "Standart", "price": 160 }
+    ]},
+    { "id": "tavuk-durum", "categoryId": "durumler", "name": "Tavuk dürüm", "order": 2, "variants": [
+      { "id": "standart", "name": "Standart", "price": 110 }
+    ]},
+    { "id": "patsolu-tavuk-durum", "categoryId": "durumler", "name": "Patsolu tavuk dürüm", "order": 3, "variants": [
+      { "id": "standart", "name": "Standart", "price": 130 }
+    ]},
+    { "id": "tantuni-durum", "categoryId": "durumler", "name": "Tantuni dürüm", "order": 4, "variants": [
+      { "id": "standart", "name": "Standart", "price": 110 }
+    ]},
+    { "id": "cig-kofte-durum", "categoryId": "durumler", "name": "Çiğ köfte dürüm", "order": 5, "variants": [
+      { "id": "standart", "name": "Standart", "price": 60 }
+    ]},
+
+    { "id": "soguk-sandvic", "categoryId": "diger", "name": "Soğuk sandviç", "order": 1, "variants": [
+      { "id": "standart", "name": "Standart", "price": 80 }
+    ]},
+    { "id": "patso", "categoryId": "diger", "name": "Patso", "order": 2, "variants": [
+      { "id": "standart", "name": "Standart", "price": 70 }
+    ]},
+    { "id": "patates-tabagi", "categoryId": "diger", "name": "Patates tabağı", "order": 3, "variants": [
+      { "id": "standart", "name": "Standart", "price": 70 }
+    ]},
+    { "id": "tabak-tavuk-patates", "categoryId": "diger", "name": "Tabak tavuk patates", "order": 4, "variants": [
+      { "id": "standart", "name": "Standart", "price": 180 }
+    ]},
+    { "id": "pizza", "categoryId": "diger", "name": "Pizza", "order": 5, "variants": [
+      { "id": "standart", "name": "Standart", "price": 200 }
+    ]}
+  ]
+}
