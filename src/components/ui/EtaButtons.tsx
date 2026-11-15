@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ETA_CHOICES } from '@/features/admin/orderActions';
 import { colors, rounded, spacing, typography } from '@/theme/tokens';
 
 export interface EtaButtonsProps {
   onPick: (minutes: number) => void;
   disabled?: boolean;
-  /** Pano kartında tek sıra: "5 10 15 20 30 Diğer" (birim üstte yazılır) */
+  /** Pano kartında tek sıra: "15 20 25 30 35 40 45" (birim üstte yazılır) */
   compact?: boolean;
 }
 
 const MIN_TOUCH = 48;
 
-/** Yeni siparişe süre verme: 5/10/15/20/30 dk + "Diğer" (1-120). Yağlı parmakla basılacak kadar büyük. */
+/** Yeni siparişe süre verme: 15-45 dk, 5'er dakika. Yağlı parmakla basılacak kadar büyük. */
 export const EtaButtons: React.FC<EtaButtonsProps> = ({ onPick, disabled = false, compact = false }) => {
-  const [custom, setCustom] = useState<string | null>(null);
-  const customValue = Number(custom);
-  const customValid = custom !== null && Number.isInteger(customValue) && customValue >= 1 && customValue <= 120;
-
   return (
     <View>
       <View style={[styles.grid, compact && styles.row]}>
@@ -35,42 +31,7 @@ export const EtaButtons: React.FC<EtaButtonsProps> = ({ onPick, disabled = false
             </Text>
           </Pressable>
         ))}
-        <Pressable
-          disabled={disabled}
-          onPress={() => setCustom((c) => (c === null ? '' : null))}
-          style={({ pressed }) => [styles.button, compact && styles.compactButton, custom !== null && styles.selected, pressed && styles.pressed]}
-          accessibilityRole="button"
-          accessibilityLabel="Başka süre gir"
-        >
-          <Text style={[styles.label, custom !== null && styles.selectedLabel]}>Diğer</Text>
-        </Pressable>
       </View>
-      {custom !== null ? (
-        <View style={styles.customRow}>
-          <TextInput
-            value={custom}
-            onChangeText={(v) => setCustom(v.replace(/\D/g, '').slice(0, 3))}
-            placeholder="Dakika"
-            placeholderTextColor={colors.placeholder}
-            keyboardType="number-pad"
-            autoFocus
-            style={styles.input}
-            accessibilityLabel="Dakika, 1 ile 120 arası"
-          />
-          <Pressable
-            disabled={!customValid || disabled}
-            onPress={() => {
-              onPick(customValue);
-              setCustom(null);
-            }}
-            style={({ pressed }) => [styles.giveButton, (!customValid || disabled) && styles.disabled, pressed && styles.givePressed]}
-            accessibilityRole="button"
-            accessibilityLabel="Süreyi ver"
-          >
-            <Text style={styles.giveLabel}>Süre ver</Text>
-          </Pressable>
-        </View>
-      ) : null}
     </View>
   );
 };
@@ -103,9 +64,6 @@ const styles = StyleSheet.create({
   pressed: {
     backgroundColor: colors.hairline,
   },
-  selected: {
-    backgroundColor: colors.ink,
-  },
   disabled: {
     opacity: 0.45,
   },
@@ -113,41 +71,5 @@ const styles = StyleSheet.create({
     fontFamily: typography.body.fontFamily.semiBold,
     fontSize: typography.body.sizes.body,
     color: colors.ink,
-  },
-  selectedLabel: {
-    color: colors.ground,
-  },
-  customRow: {
-    flexDirection: 'row',
-    gap: spacing.xs,
-    marginTop: spacing.xs,
-  },
-  input: {
-    flex: 1,
-    minHeight: MIN_TOUCH,
-    borderRadius: rounded.input,
-    borderWidth: 1,
-    borderColor: colors.hairline,
-    backgroundColor: colors.ground,
-    paddingHorizontal: spacing.md,
-    fontFamily: typography.body.fontFamily.regular,
-    fontSize: typography.body.sizes.body,
-    color: colors.ink,
-  },
-  giveButton: {
-    minHeight: MIN_TOUCH,
-    paddingHorizontal: spacing.lg,
-    borderRadius: rounded.button,
-    backgroundColor: colors.tea,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  givePressed: {
-    backgroundColor: colors.teaPressed,
-  },
-  giveLabel: {
-    fontFamily: typography.body.fontFamily.semiBold,
-    fontSize: typography.body.sizes.body,
-    color: colors.onTea,
   },
 });

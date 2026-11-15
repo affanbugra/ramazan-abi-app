@@ -64,6 +64,7 @@ export interface ShopSettings {
   isOpen: boolean;
   prayerBreak?: boolean; // namaz arası: kantin açık ama yeni sipariş alınmaz (eski dokümanda yok = false)
   teaReady?: boolean; // çay demlendi mi (sadece bilgi)
+  minAppVersion?: string; // bundan eski uygulamalar sipariş veremez, güncelleme ekranı görür (ör. "1.1.0")
   busyLevel: BusyLevel;
   maxActiveOrders: number;
   updatedAt: Timestamp;
@@ -88,6 +89,7 @@ export interface OrderItem {
   productName: string;
   variantId: string;
   variantName: string;
+  displayName?: string; // siparişte görünen ad ("Sucuklu Yumurta"); 1.1 öncesi siparişlerde yok
   unitPrice: number;
   qty: number;
   note: string | null;

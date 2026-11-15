@@ -15,6 +15,9 @@ import {
   BarlowCondensed_600SemiBold,
 } from '@expo-google-fonts/barlow-condensed';
 import { startSessionListener, useSession } from '@/features/auth/session';
+import { useShopSettings } from '@/features/menu/api';
+import { UpdateScreen } from '@/features/update/UpdateScreen';
+import { APP_VERSION, isVersionAtLeast } from '@/lib/appVersion';
 import { NotificationBridge } from '@/features/notifications/NotificationBridge';
 import { setupNotificationChannels } from '@/lib/notifications';
 import { colors } from '@/theme/tokens';
@@ -30,6 +33,9 @@ export default function RootLayout() {
     BarlowCondensed_600SemiBold,
   });
   const session = useSession((s) => s.session);
+  // settings/shop herkese açık; minAppVersion'dan eski sürüm uygulamaya giremez (zorunlu güncelleme)
+  const minAppVersion = useShopSettings().data?.minAppVersion;
+  const outdated = Boolean(minAppVersion && !isVersionAtLeast(APP_VERSION, minAppVersion));
 
   useEffect(() => startSessionListener(), []);
   useEffect(() => {
@@ -46,6 +52,15 @@ export default function RootLayout() {
 
   if (!ready) {
     return null;
+  }
+
+  if (outdated) {
+    return (
+      <GestureHandlerRootView style={styles.container}>
+        <StatusBar style="dark" />
+        <UpdateScreen />
+      </GestureHandlerRootView>
+    );
   }
 
   const profile = session.status === 'signedIn' ? session.profile : null;

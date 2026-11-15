@@ -38,7 +38,13 @@ export function shortName(name: string): string {
 /** "2× Tost (Kaşarlı), 1× Patso" */
 export function itemsSummary(order: Pick<OrderDoc, 'items'>): string {
   return order.items
-    .map((i) => (i.variantName === 'Standart' ? `${i.qty}× ${i.productName}` : `${i.qty}× ${i.productName} (${i.variantName})`))
+    .map((i) =>
+      i.displayName
+        ? `${i.qty}× ${i.displayName}`
+        : i.variantName === 'Standart'
+          ? `${i.qty}× ${i.productName}`
+          : `${i.qty}× ${i.productName} (${i.variantName})`,
+    )
     .join(', ');
 }
 

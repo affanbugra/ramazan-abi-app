@@ -11,6 +11,7 @@ import {
   type ShopSettings,
   type UserDoc,
 } from './models';
+import { isVersionAtLeast, orderItemName } from './orderName';
 import { adminRecipients, itemsSummary, sendPush, shortName, userRecipient } from './push';
 import { recomputeQueue } from './queue';
 import { applyStats, isClosed } from './stats';
@@ -27,6 +28,7 @@ interface PlaceOrderInput {
   requestId?: unknown;
   items?: unknown;
   note?: unknown;
+  appVersion?: unknown; // 1.1 ve sonrası gönderir
 }
 
 interface CleanItem {
@@ -94,6 +96,14 @@ export const placeOrder = onCall<PlaceOrderInput>(async (request) => {
   const user = userSnap.data() as UserDoc | undefined;
   if (!user || user.status !== 'active') throw new HttpsError('permission-denied', 'Hesabın askıya alınmış.');
   const shop = shopSnap.data() as ShopSettings | undefined;
+  // Zorunlu güncelleme: eski sürümler (1.0 sürümü hiç göndermez) bu mesajı görür
+  if (shop?.minAppVersion && !isVersionAtLeast(input.appVersion, shop.minAppVersion)) {
+    throw new HttpsError(
+      'failed-precondition',
+      'Uygulamanın yeni sürümü var. Sipariş vermek için App Store veya Google Play\'den güncelle.',
+      { reason: 'update' },
+    );
+  }
   if (!shop?.isOpen) throw new HttpsError('failed-precondition', 'Kantin şu an kapalı.', { reason: 'closed' });
   if (shop.prayerBreak) {
     throw new HttpsError('failed-precondition', 'Ramazan abi namazda. Dönünce sipariş verebilirsin.', { reason: 'prayer' });
@@ -135,6 +145,7 @@ export const placeOrder = onCall<PlaceOrderInput>(async (request) => {
       productName: product.name,
       variantId: variant.id,
       variantName: variant.name,
+      displayName: orderItemName(product.name, variant.name, product.variants.length),
       unitPrice: variant.price,
       qty: item.qty,
       note: item.note,

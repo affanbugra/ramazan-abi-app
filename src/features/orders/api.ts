@@ -1,5 +1,6 @@
 import { limit, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { FunctionsError, httpsCallable } from 'firebase/functions';
+import { APP_VERSION } from '@/lib/appVersion';
 import { functions, typedCollection, typedDoc } from '@/lib/firebase';
 import { useLiveCollection, useLiveDocument } from '@/lib/useFirestore';
 import type { CartLine, NewCartLine } from '@/features/cart/store';
@@ -42,6 +43,7 @@ interface PlaceOrderInput {
   requestId: string;
   items: { productId: string; variantId: string; qty: number; note: string | null }[];
   note: string | null;
+  appVersion: string;
 }
 
 const placeOrderCallable = httpsCallable<PlaceOrderInput, { orderId: string; orderNo: number }>(functions, 'placeOrder');
@@ -60,6 +62,7 @@ export async function placeOrder(
       requestId,
       items: lines.map((l) => ({ productId: l.productId, variantId: l.variantId, qty: l.qty, note: l.note })),
       note: note.trim() || null,
+      appVersion: APP_VERSION,
     });
     return { ok: true, ...data };
   } catch (err) {

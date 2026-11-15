@@ -12,7 +12,6 @@ import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { QuantityStepper } from './QuantityStepper';
-import { TextField } from './TextField';
 import { VariantRadioRow } from './VariantRadioRow';
 import { useCart, MAX_QTY } from '@/features/cart/store';
 import { firstAvailableVariant, isSingleVariant, isVariantOrderable } from '@/features/menu/api';
@@ -31,27 +30,23 @@ export interface ProductSheetProps {
   onAdded: (message: string) => void;
 }
 
-const NOTE_MAX = 140;
-
 function Backdrop(props: BottomSheetBackdropProps) {
   return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} pressBehavior="close" />;
 }
 
-/** Ürün detayı: çeşit seçimi, not, adet ve "Sepete ekle" (DESIGN.md → Ürün detay ekranı). */
+/** Ürün detayı: çeşit seçimi, adet ve "Sepete ekle" (DESIGN.md → Ürün detay ekranı). */
 export const ProductSheet: React.FC<ProductSheetProps> = ({ ref, product, placeholderIcon, placeholderImage, shopOpen, onAdded }) => {
   const { height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const add = useCart((s) => s.add);
 
   const [variantId, setVariantId] = useState<string | null>(null);
-  const [note, setNote] = useState('');
   const [qty, setQty] = useState(1);
 
   // Her yeni ürün açılışında form sıfırlanır
   useEffect(() => {
     if (!product) return;
     setVariantId(firstAvailableVariant(product)?.id ?? product.variants[0]?.id ?? null);
-    setNote('');
     setQty(1);
   }, [product?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -66,7 +61,6 @@ export const ProductSheet: React.FC<ProductSheetProps> = ({ ref, product, placeh
 
   const handleAdd = () => {
     if (!product || !variant || !orderable) return;
-    const cleanNote = note.trim();
     const result = add({
       productId: product.id,
       productName: product.name,
@@ -75,7 +69,7 @@ export const ProductSheet: React.FC<ProductSheetProps> = ({ ref, product, placeh
       singleVariant: single,
       unitPrice: variant.price,
       qty,
-      note: cleanNote.length > 0 ? cleanNote : null,
+      note: null, // ürün notu yok; tek not sepetteki sipariş notu
     });
     if (result === 'full') {
       onAdded('Sepete en fazla 15 farklı ürün ekleyebilirsin.');
@@ -140,16 +134,6 @@ export const ProductSheet: React.FC<ProductSheetProps> = ({ ref, product, placeh
 
           {orderable && shopOpen ? (
             <>
-              <TextField
-                label="Not ekle"
-                value={note}
-                onChangeText={setNote}
-                placeholder="Ör. az acılı olsun"
-                maxLength={NOTE_MAX}
-                InputComponent={BottomSheetTextInput}
-                containerStyle={styles.note}
-                returnKeyType="done"
-              />
               <View style={styles.footer}>
                 <QuantityStepper value={qty} onChange={setQty} min={1} max={MAX_QTY} />
                 <Button
@@ -215,9 +199,6 @@ const styles = StyleSheet.create({
   },
   variants: {
     marginTop: spacing.md,
-  },
-  note: {
-    marginTop: spacing.lg,
   },
   footer: {
     flexDirection: 'row',

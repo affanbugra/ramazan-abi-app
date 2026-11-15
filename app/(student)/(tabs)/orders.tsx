@@ -8,7 +8,7 @@ import { useSession } from '@/features/auth/session';
 import { useCart } from '@/features/cart/store';
 import { useProducts } from '@/features/menu/api';
 import { isOpenOrder, linesForReorder, useMyOrders } from '@/features/orders/api';
-import { orderSummary } from '@/features/orders/format';
+import { orderSummary, orderTitle } from '@/features/orders/format';
 import type { OrderDoc, WithId } from '@/types/models';
 import { formatDateTime, formatPrice } from '@/utils/format';
 import { colors, layout, rounded, spacing } from '@/theme/tokens';
@@ -30,10 +30,12 @@ function OrderRow({
         onPress={() => router.push({ pathname: '/(student)/order/[id]', params: { id: order.id } })}
         style={({ pressed }) => [styles.row, pressed && styles.pressed]}
         accessibilityRole="button"
-        accessibilityLabel={`Sipariş ${order.orderNo}, ${status.label}`}
+        accessibilityLabel={`${orderTitle(order)}, ${status.label}`}
       >
         <View style={styles.rowTop}>
-          <Text style={text.displayM}>#{order.orderNo}</Text>
+          <Text style={[text.displayM, styles.flexShrink]} numberOfLines={1}>
+            {orderTitle(order)}
+          </Text>
           {order.unreadForUser > 0 ? <View style={styles.unreadDot} accessibilityLabel="Okunmamış mesaj" /> : null}
           <View style={styles.flex} />
           <StatusPill label={status.label} variant={status.variant} />
@@ -117,6 +119,9 @@ export default function OrdersScreen() {
 }
 
 const styles = StyleSheet.create({
+  flexShrink: {
+    flexShrink: 1,
+  },
   flex: {
     flex: 1,
   },

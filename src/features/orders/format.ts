@@ -1,13 +1,21 @@
 import type { OrderDoc, OrderItem } from '@/types/models';
 
-/** Liste satırı için kısa özet: "2× Tost, 1× Patso" */
+/** Liste satırı için kısa özet: "2× Sucuklu Yumurta, 1× Patso" */
 export function orderSummary(order: Pick<OrderDoc, 'items'>): string {
-  return order.items.map((i) => `${i.qty}× ${i.productName}`).join(', ');
+  return order.items.map((i) => `${i.qty}× ${itemLabel(i)}`).join(', ');
 }
 
-/** Tek çeşitli üründe çeşit adı ("Standart") gösterilmez. */
+/** Siparişte görünen ad (sunucu yazar); 1.1 öncesi siparişlerde eski biçim. Tek çeşitte "Standart" gösterilmez. */
 export function itemLabel(item: OrderItem): string {
+  if (item.displayName) return item.displayName;
   return item.variantName === 'Standart' ? item.productName : `${item.productName}, ${item.variantName}`;
+}
+
+/** Öğrencinin gördüğü sipariş adı: günlük sipariş numarası öğrenciye hiç gösterilmez. */
+export function orderTitle(order: Pick<OrderDoc, 'items'>): string {
+  const [first, ...rest] = order.items;
+  if (!first) return 'Sipariş';
+  return rest.length > 0 ? `${itemLabel(first)} + ${rest.length} ürün` : itemLabel(first);
 }
 
 /** Kapanmış siparişin sonuç metni (PROJE.md 6.4). */

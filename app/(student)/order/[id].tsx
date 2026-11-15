@@ -8,7 +8,7 @@ import { CaretLeft } from 'phosphor-react-native';
 import { Button } from '@/components/ui';
 import { useSession } from '@/features/auth/session';
 import { cancelOrder, useOrder, useQueue } from '@/features/orders/api';
-import { closedResultText } from '@/features/orders/format';
+import { closedResultText, itemLabel, orderTitle } from '@/features/orders/format';
 import { OrderChat } from '@/features/orders/OrderChat';
 import type { OrderDoc, WithId } from '@/types/models';
 import { formatPrice, formatTime } from '@/utils/format';
@@ -158,8 +158,8 @@ export default function OrderTrackingScreen() {
               <Pressable onPress={() => router.back()} hitSlop={8} style={styles.back} accessibilityRole="button" accessibilityLabel="Geri">
                 <CaretLeft size={24} color={t.fg} weight="bold" />
               </Pressable>
-              <Text style={[text.bodyMedium, { color: t.fg }]} accessibilityLabel={`Sipariş ${order.orderNo}`}>
-                Sipariş #{order.orderNo}
+              <Text style={[text.bodyMedium, styles.flex, { color: t.fg }]} numberOfLines={1}>
+                {orderTitle(order)}
               </Text>
             </View>
             <View style={styles.heroBody}>
@@ -174,8 +174,7 @@ export default function OrderTrackingScreen() {
             <View key={`${item.productId}-${item.variantId}-${index}`} style={[styles.line, index > 0 && styles.divider]}>
               <Text style={styles.qty}>{item.qty}×</Text>
               <View style={styles.flex}>
-                <Text style={text.bodyMedium}>{item.productName}</Text>
-                {item.variantName !== 'Standart' ? <Text style={text.small}>{item.variantName}</Text> : null}
+                <Text style={text.bodyMedium}>{itemLabel(item)}</Text>
                 {item.note ? <Text style={styles.note}>Not: {item.note}</Text> : null}
               </View>
               <Text style={styles.price}>{formatPrice(item.unitPrice * item.qty)}</Text>

@@ -11,7 +11,7 @@ import { useShopSettings } from '@/features/menu/api';
 import { useSession } from '@/features/auth/session';
 import { NotificationPrompt } from '@/features/notifications/NotificationPrompt';
 import { newRequestId, placeOrder, type PlaceOrderError } from '@/features/orders/api';
-import { shouldShowPrompt } from '@/lib/notifications';
+import { nudgeIfDisabled, shouldShowPrompt } from '@/lib/notifications';
 import { formatPrice } from '@/utils/format';
 import { colors, layout, spacing } from '@/theme/tokens';
 import { text } from '@/theme/text';
@@ -62,6 +62,8 @@ export default function CartScreen() {
       clear();
       requestIdRef.current = null;
       router.replace({ pathname: '/(student)/order/[id]', params: { id: result.orderId } });
+      // Bildirim kapalıysa her siparişte hatırlat (sipariş hazır bildirimi gelsin diye)
+      if (uid) setTimeout(() => nudgeIfDisabled(uid).catch(() => undefined), 600);
       return;
     }
     setSubmitting(false);

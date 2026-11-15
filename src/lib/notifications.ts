@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { arrayRemove, arrayUnion, updateDoc } from 'firebase/firestore';
-import { Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { typedDoc } from '@/lib/firebase';
 import type { UserDoc } from '@/types/models';
 
@@ -79,6 +79,33 @@ export async function requestPermissionAndRegister(uid: string): Promise<Permiss
   await dismissPrompt();
   if (status === 'granted') await registerPushToken(uid);
   return status === 'granted' ? 'granted' : status === 'denied' ? 'denied' : 'undetermined';
+}
+
+/** Açılışta: izin hiç sorulmadıysa sistem penceresini doğrudan açar (kullanıcı ayarlara gitmek zorunda kalmasın). */
+export async function requestIfUndetermined(uid: string): Promise<void> {
+  if (!Device.isDevice) return;
+  if ((await permissionState()) !== 'undetermined') return;
+  await requestPermissionAndRegister(uid);
+}
+
+/**
+ * Sipariş verildikten sonra: bildirim kapalıysa her seferinde hatırlatır. "Aç" denince sistem sorabiliyorsa
+ * izin penceresi, soramıyorsa (daha önce reddedilmiş) uygulamanın ayarları açılır.
+ */
+export async function nudgeIfDisabled(uid: string): Promise<void> {
+  if (!Device.isDevice) return;
+  const { status, canAskAgain } = await Notifications.getPermissionsAsync();
+  if (status === 'granted') return;
+  Alert.alert('Bildirimler kapalı', 'Bildirimleri açarsan siparişin hazır olunca haber verelim.', [
+    { text: 'Şimdi değil', style: 'cancel' },
+    {
+      text: 'Aç',
+      onPress: () => {
+        if (canAskAgain) requestPermissionAndRegister(uid).catch(() => undefined);
+        else Linking.openSettings().catch(() => undefined);
+      },
+    },
+  ]);
 }
 
 /** Çıkışta bu cihazın token'ı silinir; bu cihaza bildirim gitmesin. */

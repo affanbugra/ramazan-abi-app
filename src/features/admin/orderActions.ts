@@ -7,7 +7,7 @@ import type { OrderDoc, OrderStatus, WithId } from '@/types/models';
 const BOARD_STATUSES: OrderStatus[] = ['pending', 'preparing', 'ready'];
 const CLOSED_STATUSES: OrderStatus[] = ['delivered', 'no_show', 'cancelled', 'rejected'];
 
-export const ETA_CHOICES = [5, 10, 15, 20, 30] as const;
+export const ETA_CHOICES = [15, 20, 25, 30, 35, 40, 45] as const;
 export const REJECT_REASONS = ['Malzeme bitti', 'Kantin kapanıyor', 'Çok yoğunuz, sonra tekrar dene'] as const;
 export const READY_WAIT_WARN_MIN = 45;
 

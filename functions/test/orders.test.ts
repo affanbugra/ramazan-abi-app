@@ -5,7 +5,7 @@ import { randomBytes } from 'node:crypto';
 import { before, describe, it } from 'node:test';
 import { initializeApp as initAdminApp } from 'firebase-admin/app';
 import { getAuth as getAdminAuth } from 'firebase-admin/auth';
-import { getFirestore as getAdminDb, Timestamp } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore as getAdminDb, Timestamp } from 'firebase-admin/firestore';
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { connectFunctionsEmulator, FunctionsError, getFunctions, httpsCallable } from 'firebase/functions';
@@ -173,7 +173,17 @@ describe('placeOrder', () => {
     assert.equal(order?.items[0].unitPrice, 75);
     assert.equal(order?.items[0].note, 'az pişmiş');
     assert.equal(order?.items[0].variantName, 'Kaşarlı');
+    assert.equal(order?.items[0].displayName, 'Kaşarlı Tost');
+    assert.equal(order?.items[1].displayName, 'Ayran');
     assert.equal(order?.note, 'Hızlı olsun');
+  });
+
+  it('zorunlu güncelleme: eski sürüm ya da sürüm göndermeyen istemci sipariş veremez', async () => {
+    await setShop({ minAppVersion: '1.1.0' });
+    const items = [{ productId: 'ayran', variantId: 'standart', qty: 1 }];
+    await expectError(placeOrder({ requestId: requestId(), items }), 'failed-precondition', 'yeni sürümü');
+    await expectError(placeOrder({ requestId: requestId(), items, appVersion: '1.0.0' }), 'failed-precondition', 'yeni sürümü');
+    await setShop({ minAppVersion: FieldValue.delete() });
   });
 
   it('aynı istek iki kez gelirse tek sipariş oluşur', async () => {

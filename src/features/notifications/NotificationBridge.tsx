@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 import { router } from 'expo-router';
 import * as Notifications from 'expo-notifications';
-import { orderIdFromResponse, registerPushToken } from '@/lib/notifications';
+import { orderIdFromResponse, registerPushToken, requestIfUndetermined } from '@/lib/notifications';
 import type { UserRole } from '@/types/models';
 
 interface NotificationBridgeProps {
@@ -19,7 +20,15 @@ export function NotificationBridge({ uid, role }: NotificationBridgeProps) {
   const handled = useRef<string | null>(null);
 
   useEffect(() => {
-    registerPushToken(uid).catch(() => undefined);
+    // İzin hiç sorulmadıysa açılışta sorulur; verildiyse token kaydedilir
+    requestIfUndetermined(uid)
+      .then(() => registerPushToken(uid))
+      .catch(() => undefined);
+    // Ayarlardan bildirimi açıp geri dönen kullanıcının token'ı da kaydedilsin
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') registerPushToken(uid).catch(() => undefined);
+    });
+    return () => sub.remove();
   }, [uid]);
 
   useEffect(() => {
